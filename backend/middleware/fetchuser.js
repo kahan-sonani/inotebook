@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken')
 
 
 const fetchUser = (req, res, next) => {
-
     const token = req.header('auth-token')
     if (!token) {
         return res.status(401).send({ error: 'Invalid token' })
@@ -18,3 +17,4 @@ const fetchUser = (req, res, next) => {
 }
 
 module.exports = fetchUser;
+

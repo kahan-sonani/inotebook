@@ -5,7 +5,6 @@ const router = express.Router()
 const { body, validationResult } = require('express-validator')
 
 router.get('/fetchAllNotes', fetchUser, async (req, res) => {
-
     try {
         const notes = await Note.find({ user: req.user.id })
         res.json(notes)
@@ -14,7 +13,6 @@ router.get('/fetchAllNotes', fetchUser, async (req, res) => {
         return res.status(500).json({ error: 'Internal Server Error', message: e.message })
     }
 })
-
 router.post('/addNote', fetchUser, [
     body('title', 'Title required').isLength({ min: 5 }),
     body('description', 'Description must be atleast 5 chars').isLength({ min: 5 }),

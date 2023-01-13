@@ -75,7 +75,7 @@ router.post('/login', [
                 id: user.id
             }
         }
-        const authtoken = jwt.sign(payload, process.env.KEY)
+        const authtoken = jwt.sign(payload, process.env.JWT)
         res.json({ authtoken: authtoken })
 
     } catch (e) {
