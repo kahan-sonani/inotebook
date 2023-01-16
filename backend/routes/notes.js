@@ -13,7 +13,7 @@ router.get('/fetchAllNotes', fetchUser, async (req, res) => {
         return res.status(500).json({ error: 'Internal Server Error', message: e.message })
     }
 })
-router.post('/addNote', fetchUser, [
+router.put('/addNote', fetchUser, [
     body('title', 'Title required').isLength({ min: 5 }),
     body('description', 'Description must be atleast 5 chars').isLength({ min: 5 }),
 ], async (req, res) => {

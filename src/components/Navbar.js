@@ -13,8 +13,8 @@ const Navbar = () => {
     const [showMenu, setShowMenu] = useState(false)
     return (
 
-        <nav className='z-30 bg-blue-100 fixed top-0 right-0 left-0'>
-            <div className="max-w-3xl mx-auto py-5 px-5">
+        <nav className='z-30 bg-blue-100 fixed top-0 right-0 left-0 w-auto'>
+            <div div className="max-w-3xl mx-auto py-5 px-5" >
                 <div className="flex justify-between">
                     <div className="flex space-x-5">
                         <div>
@@ -42,9 +42,9 @@ const Navbar = () => {
                     <Link to={homePath} className={`font-semibold ${location.pathname !== homePath ? 'text-slate-500' : ''} block py-2 px-1`}>Home</Link>
                     <Link to={aboutPath} className={`font-semibold ${location.pathname !== aboutPath ? 'text-slate-500' : ''} block py-2 px-1`}>About</Link>
                 </div>
+
             </div>
         </nav>
-
     )
 }
 
