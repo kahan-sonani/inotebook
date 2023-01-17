@@ -18,8 +18,13 @@ const NoteState = (props) => {
                     'Content-Type': 'application/json'
                 },
             })
-        notes.push(note)
-        setNotes(notes)
+        if (!result.data.success) {
+            return false;
+        } else {
+            notes.push(note)
+            setNotes(notes)
+            return true;
+        }
     }
 
     const deleteNote = async (id) => {
@@ -31,8 +36,13 @@ const NoteState = (props) => {
                 'Content-Type': 'application/json'
             }
         })
-        const newNotes = notes.filter((note) => { return note._id !== id })
-        setNotes(newNotes)
+        if (!result.data.success) {
+            return false;
+        } else {
+            const newNotes = notes.filter((note) => { return note._id !== id })
+            setNotes(newNotes)
+            return true;
+        }
     }
 
     const updateNote = async (note) => {
@@ -41,25 +51,30 @@ const NoteState = (props) => {
             , {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
                     'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNiZTkzMzQzZWYyM2FjMTA0N2JlZGY4In0sImlhdCI6MTY3MzQzMzkwOH0.qRfTf8DZug2HLFSS_nORGzEnREextwvF6tMZkNSV4RI',
+                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
                     'Content-Type': 'application/json'
                 },
             })
-        let newNotes = JSON.parse(JSON.stringify(notes))
-        for (let item in newNotes) {
-            if (item._id === note._id) {
-                item.title = note.title;
-                item.description = note.description;
-                item.tag = note.tag;
-                break;
-            }
-        }
 
-        setNotes(newNotes)
+        if (!result.data.success) {
+            return false;
+        } else {
+            let newNotes = JSON.parse(JSON.stringify(notes))
+            for (let item in newNotes) {
+                if (item._id === note._id) {
+                    item.title = note.title;
+                    item.description = note.description;
+                    item.tag = note.tag;
+                    break;
+                }
+            }
+            setNotes(newNotes)
+            return true;
+        }
     }
     const getNotes = async () => {
-        const notess = await axios.get(`${host}/api/notes/fetchAllNotes`, {
+        const result = await axios.get(`${host}/api/notes/fetchAllNotes`, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
@@ -67,10 +82,15 @@ const NoteState = (props) => {
                 'Content-Type': 'application/json'
             }
         })
-        notess.data.sort((a, b) => {
-            return b.description.length - a.description.length
-        })
-        setNotes(notess.data)
+        if (!result.data.success) {
+            return false;
+        } else {
+            result.data.notes.sort((a, b) => {
+                return b.description.length - a.description.length
+            })
+            setNotes(result.data.notes)
+            return true;
+        }
     }
 
     return <noteContext.Provider value={{ notes, addNote, deleteNote, updateNote, getNotes }}>

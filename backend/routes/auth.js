@@ -41,11 +41,11 @@ router.post('/createuser', [
             }
         }
         const authtoken = jwt.sign(data, process.env.JWT)
-        res.json({ authtoken: authtoken })
+        res.json({ authtoken: authtoken, success: true })
 
     } catch (e) {
         console.error(e.message)
-        return res.status(500).json({ error: 'Internal Server Error', message: e.message })
+        return res.status(500).json({ error: 'Internal Server Error', message: e.message, success: false })
     }
 })
 
@@ -76,11 +76,11 @@ router.post('/login', [
             }
         }
         const authtoken = jwt.sign(payload, process.env.JWT)
-        res.json({ authtoken: authtoken })
+        res.json({ authtoken: authtoken, success: true })
 
     } catch (e) {
         console.error(e.message)
-        return res.status(500).json({ error: 'Internal Server Error', message: e.message })
+        return res.status(500).json({ error: 'Internal Server Error', message: e.message, success: false })
     }
 })
 
@@ -89,11 +89,11 @@ router.post('/getuser', fetchUser, async (req, res) => {
         let userId = req.user.id
 
         const user = await User.findById(userId).select("-password")
-
         res.send(user)
+
     } catch (e) {
         console.error(e.message)
-        return res.status(500).json({ error: 'Internal Server Error', message: e.message })
+        return res.status(500).json({ error: 'Internal Server Error', message: e.message, success: false })
     }
 })
 

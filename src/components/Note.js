@@ -5,7 +5,7 @@ const Note = (props) => {
 
     const navigate = useNavigate()
     const handleClickButton = () => {
-        navigate('/home/note/edit', { state: { note: props.note } })
+        navigate('/home/note/edit', { state: { note: props.note, edit: +true } })
     }
 
     const date = new Date(props.note.date);

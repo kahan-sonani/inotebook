@@ -2,17 +2,28 @@ import React, { useContext, useEffect } from 'react'
 import Note from './Note'
 import { noteContext } from '../context/notes/NoteState'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 const Home = () => {
     const context = useContext(noteContext)
 
     const { notes, getNotes } = context;
     const navigate = useNavigate();
     useEffect(() => {
-        getNotes();
+        const result = getNotes();
+        if (!result) {
+            toast((t) => (
+                <span>
+                    Something went wrong!
+                    <button onClick={() => toast.dismiss(t.id)}>
+                        Close
+                    </button>
+                </span>
+            ));
+        }
     }, [])
 
     const addNoteClick = () => {
-        navigate('/home/note/add', { state: { note: { title: "", description: "", tag: "" } } })
+        navigate('/home/note/add', { state: { note: { title: "", description: "", tag: "" }, edit: +false } })
     }
     return (
         <div className='max-w-3xl mx-auto py-5 px-5 mt-5'>

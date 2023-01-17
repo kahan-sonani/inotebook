@@ -7,10 +7,10 @@ const { body, validationResult } = require('express-validator')
 router.get('/fetchAllNotes', fetchUser, async (req, res) => {
     try {
         const notes = await Note.find({ user: req.user.id })
-        res.json(notes)
+        res.json({ notes: notes, success: true })
     } catch (e) {
         console.error(e.message)
-        return res.status(500).json({ error: 'Internal Server Error', message: e.message })
+        return res.status(500).json({ error: 'Internal Server Error', message: e.message, success: false })
     }
 })
 router.put('/addNote', fetchUser, [
@@ -27,11 +27,11 @@ router.put('/addNote', fetchUser, [
             title, description, tag, user: req.user.id
         })
         const savedNode = await note.save()
-        res.json(savedNode)
+        res.json({ success: true, note: savedNode })
 
     } catch (e) {
         console.error(e.message)
-        return res.status(500).json({ error: 'Internal Server Error', message: e.message })
+        return res.status(500).json({ error: 'Internal Server Error', message: e.message, success: false })
     }
 })
 
@@ -49,11 +49,11 @@ router.put('/updateNote/:id', fetchUser, async (req, res) => {
         if (note.user.toString() !== req.user.id) { return res.status(401).send({ message: "Unauthorized access" }) }
 
         let savedNote = await Note.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true })
-        res.json(savedNote)
+        res.json({ success: true, note: savedNote })
 
     } catch (e) {
         console.error(e.message)
-        return res.status(500).json({ error: 'Internal Server Error', message: e.message })
+        return res.status(500).json({ error: 'Internal Server Error', message: e.message, success: false })
     }
 })
 
@@ -64,11 +64,11 @@ router.delete('/deleteNote/:id', fetchUser, async (req, res) => {
         if (note.user.toString() !== req.user.id) { return res.status(401).send({ message: "Unauthorized access" }) }
 
         let deletedNote = await Note.findByIdAndDelete(req.params.id)
-        res.json({ message: 'Note deleted', note: deletedNote })
+        res.json({ message: 'Note deleted', note: deletedNote, success: true })
 
     } catch (e) {
         console.error(e.message)
-        return res.status(500).json({ error: 'Internal Server Error', message: e.message })
+        return res.status(500).json({ error: 'Internal Server Error', message: e.message, success: false })
     }
 })
 
